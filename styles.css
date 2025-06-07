@@ -1,0 +1,302 @@
+body {
+  margin: 0;
+  font-family: 'Inter', Arial, sans-serif;
+  background: #f8f1e6;
+  color: #222;
+}
+.container {
+  max-width: 400px;
+  margin: 0 auto;
+  padding: 24px 12px 12px 12px;
+  background: #f8f1e6;
+  min-height: 100vh;
+}
+header h1 {
+  font-size: 2rem;
+  font-weight: 700;
+  margin: 0 0 8px 0;
+  line-height: 1.1;
+}
+.username {
+  font-weight: 500;
+}
+.today-usage {
+  display: flex;
+  align-items: center;
+  background: #fff;
+  border-radius: 16px;
+  padding: 8px 16px;
+  margin: 16px 0 0 0;
+  font-size: 1.1rem;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.03);
+  gap: 8px;
+}
+.icon-water {
+  display: inline-block;
+  width: 24px;
+  height: 24px;
+  background: url('data:image/svg+xml;utf8,<svg fill="%2300aaff" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 2C12 2 5 10.5 5 15.5C5 19.09 8.13 22 12 22C15.87 22 19 19.09 19 15.5C19 10.5 12 2 12 2ZM12 20C9.24 20 7 17.76 7 15.5C7 13.5 10.5 8.36 12 6.28C13.5 8.36 17 13.5 17 15.5C17 17.76 14.76 20 12 20Z"/></svg>') no-repeat center/contain;
+}
+.today-litres {
+  color: #00aaff;
+  font-weight: 600;
+}
+.water-usage-section {
+  margin: 24px 0 0 0;
+}
+.water-usage-section h2 {
+  font-size: 1.1rem;
+  font-weight: 600;
+  margin-bottom: 8px;
+}
+.chart-container {
+  background: #e6e1d9;
+  border-radius: 16px;
+  padding: 16px 8px 8px 8px;
+  position: relative;
+}
+#usageChart {
+  width: 100%;
+  height: 120px;
+  display: block;
+}
+.days {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 4px;
+  font-size: 1rem;
+  color: #888;
+}
+.days .active {
+  background: #3ec6c1;
+  color: #fff;
+  border-radius: 8px;
+  padding: 0 8px;
+}
+.goals-tips {
+  display: flex;
+  gap: 12px;
+  margin-top: 24px;
+  flex-wrap: wrap;
+}
+.goal, .tip {
+  flex: 1 1 160px;
+  background: #fff;
+  border-radius: 16px;
+  padding: 16px 12px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.03);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-width: 140px;
+}
+.goal-circle {
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  border: 6px solid #3ec6c1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 8px;
+}
+.goal-circle .icon-water {
+  width: 32px;
+  height: 32px;
+}
+.goal-text strong {
+  font-size: 1.1rem;
+  font-weight: 600;
+}
+.goal-text p {
+  margin: 4px 0 0 0;
+  font-size: 0.98rem;
+}
+.goal-litres {
+  color: #00aaff;
+  font-weight: 600;
+}
+.tip-icon {
+  width: 40px;
+  height: 40px;
+  margin-bottom: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.icon-tip {
+  display: inline-block;
+  width: 32px;
+  height: 32px;
+  background: url('data:image/svg+xml;utf8,<svg fill="%233ec6c1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 2C7.03 2 3 6.03 3 11c0 3.87 3.13 7 7 7v2h4v-2c3.87 0 7-3.13 7-7 0-4.97-4.03-9-9-9zm0 16c-2.76 0-5-2.24-5-5 0-2.76 2.24-5 5-5s5 2.24 5 5c0 2.76-2.24 5-5 5z"/></svg>') no-repeat center/contain;
+}
+.tip-text strong {
+  font-size: 1.1rem;
+  font-weight: 600;
+}
+.tip-text p {
+  margin: 4px 0 0 0;
+  font-size: 0.98rem;
+  text-align: center;
+}
+@media (max-width: 600px) {
+  .container {
+    max-width: 100%;
+    padding: 12px 2vw;
+  }
+  .goals-tips {
+    flex-direction: column;
+    gap: 16px;
+  }
+  .goal, .tip {
+    min-width: unset;
+    width: 100%;
+  }
+}
+.edit-goal-btn {
+  display: inline-block;
+  vertical-align: middle;
+  margin-left: 8px;
+  cursor: pointer;
+  transition: opacity 0.2s;
+}
+.edit-goal-btn svg {
+  vertical-align: middle;
+}
+.edit-goal-btn:hover {
+  opacity: 0.7;
+}
+.goal-value-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin: 4px 0 0 0;
+}
+.goal-edit-input {
+  font-size: 1rem;
+  padding: 2px 6px;
+  border: 1px solid #3ec6c1;
+  border-radius: 6px;
+  outline: none;
+}
+.goal-save-btn, .goal-cancel-btn {
+  font-size: 0.95rem;
+  padding: 2px 10px;
+  border: none;
+  border-radius: 6px;
+  background: #3ec6c1;
+  color: #fff;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+.goal-cancel-btn {
+  background: #e74c3c;
+}
+.goal-save-btn:hover {
+  background: #00aaff;
+}
+.goal-cancel-btn:hover {
+  background: #c0392b;
+}
+.header-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 12px;
+}
+.signup-btn {
+  background: #3ec6c1;
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  padding: 8px 18px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s;
+  margin-top: 4px;
+}
+.signup-btn:hover {
+  background: #00aaff;
+}
+.signup-modal {
+  position: fixed;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: rgba(0,0,0,0.25);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+.signup-modal-content {
+  background: #fff;
+  border-radius: 16px;
+  padding: 32px 24px 24px 24px;
+  min-width: 300px;
+  max-width: 90vw;
+  box-shadow: 0 4px 24px rgba(0,0,0,0.10);
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+.signup-modal-content h2 {
+  margin: 0 0 8px 0;
+  font-size: 1.3rem;
+  font-weight: 700;
+}
+.signup-input {
+  font-size: 1rem;
+  padding: 7px 10px;
+  border: 1px solid #3ec6c1;
+  border-radius: 8px;
+  margin-bottom: 8px;
+}
+.signup-modal-actions {
+  display: flex;
+  gap: 12px;
+  justify-content: flex-end;
+  margin-top: 8px;
+}
+.signup-save-btn, .signup-cancel-btn {
+  font-size: 1rem;
+  padding: 6px 18px;
+  border: none;
+  border-radius: 8px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+.signup-save-btn {
+  background: #3ec6c1;
+  color: #fff;
+}
+.signup-save-btn:hover {
+  background: #00aaff;
+}
+.signup-cancel-btn {
+  background: #e74c3c;
+  color: #fff;
+}
+.signup-cancel-btn:hover {
+  background: #c0392b;
+}
+@media (max-width: 600px) {
+  .signup-modal-content {
+    min-width: 90vw;
+    padding: 18px 6vw 18px 6vw;
+  }
+}
+.signout-btn {
+  background: #e74c3c;
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  font-size: 0.92rem;
+  padding: 2px 10px;
+  margin-left: 8px;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+.signout-btn:hover {
+  background: #c0392b;
+} 

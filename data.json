@@ -1,0 +1,14 @@
+{
+  "goal": 900,
+  "days": ["S", "M", "T", "W", "T", "F", "S"],
+  "usage": [320, 350, 500, 700, 900, 850, 400],
+  "tips": [
+    "Do laundry with a full load to save water.",
+    "Turn off the tap while brushing your teeth.",
+    "Fix leaky faucets to prevent water waste.",
+    "Collect rainwater for watering plants.",
+    "Use a broom instead of a hose to clean driveways.",
+    "Take shorter showers to reduce your water use.",
+    "Water your garden early in the morning or late evening."
+  ]
+} 

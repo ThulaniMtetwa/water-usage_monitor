@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Water Usage Dashboard</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div class="container">
+    <header>
+      <div class="header-row">
+        <h1>Good morning,<br><span class="username"></span></h1>
+        <button class="signup-btn">Sign Up</button>
+      </div>
+      <div class="today-usage">
+        <span class="icon-water"></span>
+        <span>Today: <span class="today-litres">850L</span></span>
+      </div>
+    </header>
+    <section class="water-usage-section">
+      <h2>Water Usage</h2>
+      <div class="chart-container">
+        <canvas id="usageChart"></canvas>
+        <div class="days">
+          <span>S</span><span>M</span><span>T</span><span>W</span><span>T</span><span class="active">F</span>
+        </div>
+      </div>
+    </section>
+    <section class="goals-tips">
+      <div class="goal">
+        <div class="goal-circle">
+          <span class="icon-water"></span>
+        </div>
+        <div class="goal-text">
+          <strong>Goal</strong>
+          <span class="edit-goal-btn" title="Edit goal">
+            <svg width="18" height="18" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M14.7 2.29a1 1 0 0 1 1.42 0l1.59 1.59a1 1 0 0 1 0 1.42l-9.3 9.3-2.12.71.71-2.12 9.3-9.3zM3 17h14v2H3v-2z" fill="#3ec6c1"/>
+            </svg>
+          </span>
+          <p class="goal-value-row">
+            <span class="goal-litres"></span>
+            <input type="number" min="1" class="goal-edit-input" style="display:none;width:80px;" />
+            <button class="goal-save-btn" style="display:none;">Save</button>
+            <button class="goal-cancel-btn" style="display:none;">Cancel</button>
+          </p>
+        </div>
+      </div>
+      <div class="tip">
+        <div class="tip-icon">
+          <span class="icon-tip"></span>
+        </div>
+        <div class="tip-text">
+          <strong>Tip</strong>
+          <p>Take shorter showers to reduce your water use</p>
+        </div>
+      </div>
+    </section>
+  </div>
+  <div class="signup-modal" style="display:none;">
+    <div class="signup-modal-content">
+      <h2>Sign Up</h2>
+      <label for="signup-name">Name</label>
+      <input type="text" id="signup-name" class="signup-input" placeholder="Enter your name" />
+      <label for="signup-goal">Water Saving Goal (L)</label>
+      <input type="number" id="signup-goal" class="signup-input" min="1" placeholder="e.g. 750" />
+      <div class="signup-modal-actions">
+        <button class="signup-save-btn">Save</button>
+        <button class="signup-cancel-btn">Cancel</button>
+      </div>
+    </div>
+  </div>
+  <script src="script.js"></script>
+</body>
+</html> 
