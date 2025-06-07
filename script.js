@@ -11,6 +11,8 @@ document.addEventListener('DOMContentLoaded', function () {
   const saveBtn = document.querySelector('.goal-save-btn');
   const cancelBtn = document.querySelector('.goal-cancel-btn');
   const goalValueRow = document.querySelector('.goal-value-row');
+  const usageAlert = document.querySelector('.usage-alert');
+  const weeklySummary = document.querySelector('.weekly-summary');
 
   // State
   let data = null;
@@ -36,6 +38,79 @@ document.addEventListener('DOMContentLoaded', function () {
   tooltip.style.zIndex = 10;
   document.body.appendChild(tooltip);
 
+  // --- Edit Daily Usage Interactivity ---
+  let editingUsageIndex = null;
+  function renderDayLabels() {
+    const daysRow = document.querySelector('.days');
+    if (!daysRow) return;
+    daysRow.innerHTML = '';
+    for (let i = 0; i < days.length; i++) {
+      const isActive = i === selectedIndex ? 'active' : '';
+      const daySpan = document.createElement('span');
+      daySpan.className = `day-label ${isActive}`;
+      daySpan.setAttribute('data-day', i);
+      daySpan.setAttribute('tabindex', '0');
+      if (editingUsageIndex === i) {
+        // Edit mode
+        const form = document.createElement('span');
+        form.className = 'usage-edit-row';
+        form.innerHTML = `
+          <input type="number" min="0" class="usage-edit-input" value="${usage[i]}" aria-label="Edit usage for ${days[i]}" />
+          <button class="usage-save-btn" aria-label="Save usage">Save</button>
+          <button class="usage-cancel-btn" aria-label="Cancel usage edit">Cancel</button>
+        `;
+        daySpan.appendChild(document.createTextNode(days[i]));
+        daySpan.appendChild(form);
+        daysRow.appendChild(daySpan);
+        // Add events
+        const input = form.querySelector('.usage-edit-input');
+        const saveBtn = form.querySelector('.usage-save-btn');
+        const cancelBtn = form.querySelector('.usage-cancel-btn');
+        setTimeout(() => input.focus(), 100);
+        saveBtn.onclick = () => {
+          const val = parseInt(input.value, 10);
+          if (!isNaN(val) && val >= 0) {
+            usage[i] = val;
+            if (data) data.usage[i] = val;
+            editingUsageIndex = null;
+            renderDayLabels();
+            drawChart();
+            updateGoalRing(selectedIndex);
+            updateDashboardExtras();
+            fetch('data.json', {
+              method: 'PUT',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify(data, null, 2)
+            }).catch(() => {});
+          }
+        };
+        cancelBtn.onclick = () => {
+          editingUsageIndex = null;
+          renderDayLabels();
+        };
+        input.onkeydown = (e) => {
+          if (e.key === 'Enter') saveBtn.click();
+          if (e.key === 'Escape') cancelBtn.click();
+        };
+      } else {
+        // Normal mode
+        daySpan.textContent = days[i];
+        if (isActive) daySpan.classList.add('active');
+        daysRow.appendChild(daySpan);
+        daySpan.onclick = () => {
+          editingUsageIndex = i;
+          renderDayLabels();
+        };
+        daySpan.onkeydown = (e) => {
+          if (e.key === 'Enter' || e.key === ' ') {
+            editingUsageIndex = i;
+            renderDayLabels();
+          }
+        };
+      }
+    }
+  }
+
   // Fetch data from JSON
   fetch('data.json')
     .then(response => response.json())
@@ -50,6 +125,8 @@ document.addEventListener('DOMContentLoaded', function () {
       selectedIndex = todayIndex;
       resizeCanvas();
       updateGoalRing(selectedIndex);
+      updateDashboardExtras();
+      renderDayLabels();
     });
 
   function resizeCanvas() {
@@ -64,7 +141,6 @@ document.addEventListener('DOMContentLoaded', function () {
     // Draw background area
     ctx.fillStyle = '#dbe6e6';
     ctx.beginPath();
-    ctx.moveTo(0, canvas.height);
     points = [];
     for (let i = 0; i < usage.length; i++) {
       const x = (canvas.width / (usage.length - 1)) * i;
@@ -206,6 +282,7 @@ document.addEventListener('DOMContentLoaded', function () {
       if (data) data.goal = newGoal;
       updateGoalRing(selectedIndex);
       drawChart();
+      updateDashboardExtras();
       // Try to update data.json (will only work if served by a backend that allows PUT/PATCH)
       fetch('data.json', {
         method: 'PUT',
@@ -242,6 +319,8 @@ document.addEventListener('DOMContentLoaded', function () {
     // Restore to today
     selectedIndex = todayIndex;
     updateGoalRing(selectedIndex);
+    updateDashboardExtras();
+    renderDayLabels();
   });
 
   // Click to select a day
@@ -255,6 +334,8 @@ document.addEventListener('DOMContentLoaded', function () {
       selectedIndex = idx;
       updateGoalRing(selectedIndex);
       drawChart();
+      updateDashboardExtras();
+      renderDayLabels();
     }
   });
 
@@ -271,6 +352,8 @@ document.addEventListener('DOMContentLoaded', function () {
       selectedIndex = idx;
       updateGoalRing(selectedIndex);
       drawChart();
+      updateDashboardExtras();
+      renderDayLabels();
     }
     showTooltip(idx, e);
   });
@@ -287,6 +370,7 @@ document.addEventListener('DOMContentLoaded', function () {
     hoveredIndex = null;
     resizeCanvas();
     updateGoalRing(selectedIndex);
+    updateDashboardExtras();
   });
 
   // --- Sign Up Modal Interactivity ---
@@ -388,6 +472,7 @@ document.addEventListener('DOMContentLoaded', function () {
     localStorage.setItem('waterapp_user', JSON.stringify({ name, goal: newGoal }));
     updateGoalRing(selectedIndex);
     drawChart();
+    updateDashboardExtras();
     hideSignupModal();
     // Try to update data.json (will only work if served by a backend that allows PUT/PATCH)
     fetch('data.json', {
@@ -396,4 +481,36 @@ document.addEventListener('DOMContentLoaded', function () {
       body: JSON.stringify(data, null, 2)
     }).catch(() => {});
   });
+
+  function updateUsageAlert() {
+    if (!usage.length) return;
+    const today = selectedIndex;
+    const avg = usage.reduce((a, b) => a + b, 0) / usage.length;
+    if (usage[today] > avg * 1.3) {
+      usageAlert.style.display = '';
+      const percent = Math.round(((usage[today] - avg) / avg) * 100);
+      usageAlert.textContent = `Alert: Your usage today is ${percent}% above your weekly average!`;
+    } else {
+      usageAlert.style.display = 'none';
+    }
+  }
+
+  function updateWeeklySummary() {
+    if (!usage.length) return;
+    const total = usage.reduce((a, b) => a + b, 0);
+    const weekGoal = goal * usage.length;
+    if (total <= weekGoal) {
+      weeklySummary.textContent = `Great job! You saved ${weekGoal - total}L this week.`;
+      weeklySummary.style.color = '#3ec6c1';
+    } else {
+      weeklySummary.textContent = `You exceeded your weekly goal by ${total - weekGoal}L.`;
+      weeklySummary.style.color = '#e74c3c';
+    }
+  }
+
+  // Call these after any update
+  function updateDashboardExtras() {
+    updateUsageAlert();
+    updateWeeklySummary();
+  }
 }); 

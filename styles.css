@@ -299,4 +299,69 @@ header h1 {
 }
 .signout-btn:hover {
   background: #c0392b;
+}
+.usage-alert {
+  display: none;
+  background: #ffe5e5;
+  color: #c0392b;
+  border: 1px solid #e74c3c;
+  border-radius: 10px;
+  padding: 10px 16px;
+  margin-bottom: 12px;
+  font-size: 1.05rem;
+  font-weight: 600;
+  text-align: center;
+}
+.weekly-summary {
+  margin-top: 14px;
+  font-size: 1.05rem;
+  text-align: center;
+  color: #3ec6c1;
+  font-weight: 600;
+}
+.day-label {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  position: relative;
+  cursor: pointer;
+  user-select: none;
+  border-radius: 6px;
+  padding: 2px 6px;
+  transition: background 0.2s;
+}
+.day-label:hover, .day-label:focus {
+  background: #e6e1d9;
+}
+.usage-edit-row {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  margin-left: 2px;
+}
+.usage-edit-input {
+  width: 48px;
+  font-size: 1em;
+  padding: 2px 4px;
+  border: 1px solid #3ec6c1;
+  border-radius: 4px;
+}
+.usage-save-btn, .usage-cancel-btn {
+  font-size: 0.95em;
+  padding: 2px 8px;
+  border: none;
+  border-radius: 4px;
+  background: #3ec6c1;
+  color: #fff;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+.usage-cancel-btn {
+  background: #e74c3c;
+}
+.usage-save-btn:hover {
+  background: #00aaff;
+}
+.usage-cancel-btn:hover {
+  background: #c0392b;
 } 

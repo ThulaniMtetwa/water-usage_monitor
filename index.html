@@ -4,73 +4,90 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Water Usage Dashboard</title>
+  <link rel="manifest" href="manifest.json">
   <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-  <div class="container">
-    <header>
-      <div class="header-row">
-        <h1>Good morning,<br><span class="username"></span></h1>
-        <button class="signup-btn">Sign Up</button>
-      </div>
-      <div class="today-usage">
-        <span class="icon-water"></span>
-        <span>Today: <span class="today-litres">850L</span></span>
-      </div>
-    </header>
-    <section class="water-usage-section">
-      <h2>Water Usage</h2>
-      <div class="chart-container">
-        <canvas id="usageChart"></canvas>
-        <div class="days">
-          <span>S</span><span>M</span><span>T</span><span>W</span><span>T</span><span class="active">F</span>
+  <main>
+    <div class="container">
+      <header>
+        <div class="header-row">
+          <h1>Good morning,<br><span class="username" aria-label="User name"></span></h1>
+          <button class="signup-btn" aria-label="Sign up for water dashboard">Sign Up</button>
         </div>
-      </div>
-    </section>
-    <section class="goals-tips">
-      <div class="goal">
-        <div class="goal-circle">
-          <span class="icon-water"></span>
+        <div class="today-usage" aria-label="Today's water usage">
+          <span class="icon-water" aria-hidden="true"></span>
+          <span>Today: <span class="today-litres" aria-label="Today's litres">850L</span></span>
         </div>
-        <div class="goal-text">
-          <strong>Goal</strong>
-          <span class="edit-goal-btn" title="Edit goal">
-            <svg width="18" height="18" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <path d="M14.7 2.29a1 1 0 0 1 1.42 0l1.59 1.59a1 1 0 0 1 0 1.42l-9.3 9.3-2.12.71.71-2.12 9.3-9.3zM3 17h14v2H3v-2z" fill="#3ec6c1"/>
-            </svg>
-          </span>
-          <p class="goal-value-row">
-            <span class="goal-litres"></span>
-            <input type="number" min="1" class="goal-edit-input" style="display:none;width:80px;" />
-            <button class="goal-save-btn" style="display:none;">Save</button>
-            <button class="goal-cancel-btn" style="display:none;">Cancel</button>
-          </p>
+      </header>
+      <section class="water-usage-section" aria-label="Water usage chart and summary">
+        <div class="usage-alert" style="display:none;" role="alert"></div>
+        <h2>Water Usage</h2>
+        <div class="chart-container">
+          <canvas id="usageChart" tabindex="0" aria-label="Water usage line chart" role="img"></canvas>
+          <div class="days" aria-label="Days of the week">
+            <span class="day-label" data-day="0">S</span>
+            <span class="day-label" data-day="1">M</span>
+            <span class="day-label" data-day="2">T</span>
+            <span class="day-label" data-day="3">W</span>
+            <span class="day-label" data-day="4">T</span>
+            <span class="day-label" data-day="5">F</span>
+            <span class="day-label" data-day="6">S</span>
+          </div>
         </div>
-      </div>
-      <div class="tip">
-        <div class="tip-icon">
-          <span class="icon-tip"></span>
+        <div class="weekly-summary" aria-live="polite"></div>
+      </section>
+      <section class="goals-tips" aria-label="Goals and tips">
+        <div class="goal">
+          <div class="goal-circle">
+            <span class="icon-water" aria-hidden="true"></span>
+          </div>
+          <div class="goal-text">
+            <span class="edit-goal-btn" title="Edit goal" aria-label="Edit water goal" tabindex="0">
+              <svg width="18" height="18" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M14.7 2.29a1 1 0 0 1 1.42 0l1.59 1.59a1 1 0 0 1 0 1.42l-9.3 9.3-2.12.71.71-2.12 9.3-9.3zM3 17h14v2H3v-2z" fill="#3ec6c1"/>
+              </svg>
+            </span>
+            <p class="goal-value-row">
+              <span class="goal-litres"></span>
+              <input type="number" min="1" class="goal-edit-input" style="display:none;width:80px;" aria-label="Edit goal input" />
+              <button class="goal-save-btn" style="display:none;" aria-label="Save goal">Save</button>
+              <button class="goal-cancel-btn" style="display:none;" aria-label="Cancel goal edit">Cancel</button>
+            </p>
+          </div>
         </div>
-        <div class="tip-text">
-          <strong>Tip</strong>
-          <p>Take shorter showers to reduce your water use</p>
+        <div class="tip">
+          <div class="tip-icon">
+            <span class="icon-tip" aria-hidden="true"></span>
+          </div>
+          <div class="tip-text">
+            <strong>Tip</strong>
+            <p aria-live="polite"></p>
+          </div>
         </div>
-      </div>
-    </section>
-  </div>
-  <div class="signup-modal" style="display:none;">
-    <div class="signup-modal-content">
-      <h2>Sign Up</h2>
-      <label for="signup-name">Name</label>
-      <input type="text" id="signup-name" class="signup-input" placeholder="Enter your name" />
-      <label for="signup-goal">Water Saving Goal (L)</label>
-      <input type="number" id="signup-goal" class="signup-input" min="1" placeholder="e.g. 750" />
-      <div class="signup-modal-actions">
-        <button class="signup-save-btn">Save</button>
-        <button class="signup-cancel-btn">Cancel</button>
+      </section>
+    </div>
+    <div class="signup-modal" style="display:none;" role="dialog" aria-modal="true" aria-label="Sign up form">
+      <div class="signup-modal-content">
+        <h2>Sign Up</h2>
+        <label for="signup-name">Name</label>
+        <input type="text" id="signup-name" class="signup-input" placeholder="Enter your name" aria-label="Name" />
+        <label for="signup-goal">Water Saving Goal (L)</label>
+        <input type="number" id="signup-goal" class="signup-input" min="1" placeholder="e.g. 750" aria-label="Water saving goal" />
+        <div class="signup-modal-actions">
+          <button class="signup-save-btn" aria-label="Save sign up">Save</button>
+          <button class="signup-cancel-btn" aria-label="Cancel sign up">Cancel</button>
+        </div>
       </div>
     </div>
-  </div>
+  </main>
+  <script>
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', function() {
+        navigator.serviceWorker.register('service-worker.js');
+      });
+    }
+  </script>
   <script src="script.js"></script>
 </body>
 </html> 
